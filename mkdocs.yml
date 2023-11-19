@@ -30,11 +30,11 @@ nav:
 - Building a new type of Generative AI Model with Traditional AI Training:
   - index.md
 - Extracting Tensor Weights using safetensors and mmap:
-  - docs/sdk/extract-tensor-weights-as-a-numpy-file-from-a-generative-ai-model.safetensors-file.md
+  - sdk/extract-tensor-weights-as-a-numpy-file-from-a-generative-ai-model.safetensors-file.md
 - Converting Tensor Weights: 
-  - docs/sdk/convert-tensor-weights-to-tiff-file.md
+  - sdk/convert-tensor-weights-to-tiff-file.md
 - Predicting new Tensor Weights for assembling a new type of Generative AI Model without Traditional AI Training:
-  - docs/sdk/use-stable-diffusion-to-predict-new-tensor-weights-for-a-new-generative-ai-model-tensor-weight-as-a-5-to-12-mb-tiff-file-chunk.md
+  - sdk/use-stable-diffusion-to-predict-new-tensor-weights-for-a-new-generative-ai-model-tensor-weight-as-a-5-to-12-mb-tiff-file-chunk.md
 extra:
   version: "1.0.0"
 plugins:
