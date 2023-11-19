@@ -43,8 +43,8 @@ The results below are available for anyone and let us know if you have any issue
 - HuggingFace
 - LAVIS
 - Stable Diffusion
-- LocalLlamas
-- LLama.cpp et al.
+- LocalLLaMAs
+- LLama.cpp
 - Weights and Biases
 
 ### Getting Started
