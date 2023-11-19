@@ -76,9 +76,22 @@ wget https://huggingface.co/gpt2/resolve/main/model.safetensors
 
 #### Install
 
+##### Clone
+
 ```bash
 git clone https://github.com/matlok-ai/bampe-weights
+cd bampe-weights
 ```
+
+##### Install
+
+Install the latest pip:
+
+```bash
+pip install bampe-weights
+```
+
+Or install the development build:
 
 ```bash
 pip install -e .
