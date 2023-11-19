@@ -34,6 +34,8 @@ The PoC input sample weights were extracted from the HuggingFace **model.safeten
 
 [https://huggingface.co/gpt2/tree/main](https://huggingface.co/gpt2/tree/main)
 
+The results below are available for anyone and let us know if you have any issues trying out the PoC!
+
 ### Sources for Inspiration and Help Pushing the Community Forward!
 
 - Tom Jobbins
@@ -44,8 +46,6 @@ The PoC input sample weights were extracted from the HuggingFace **model.safeten
 - LocalLlamas
 - LLama.cpp et al.
 - Weights and Biases
-
-These results are available for anyone and let us know if you have any issues trying out the PoC!
 
 ### Getting Started
 
