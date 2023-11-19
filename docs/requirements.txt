@@ -1,0 +1,4 @@
+bampe-weights
+mkdocs
+mkdocstrings-python
+markdown-include

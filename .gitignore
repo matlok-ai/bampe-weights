@@ -1,0 +1,7 @@
+*.safetensors
+*.gguf
+*.bin
+*.tiff
+*.npy
+*.swo
+*.swp

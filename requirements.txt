@@ -1,0 +1,9 @@
+black
+diffusers[torch]
+flake8
+numpy
+Pillow
+pycodestyle
+safetensors
+transformers
+torch

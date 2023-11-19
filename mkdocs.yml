@@ -1,0 +1,64 @@
+# pip install --upgrade mkdocs mkdocstrings-python markdown-include
+# mkdocs serve -a 0.0.0.0:8000
+# dev_addr: 0.0.0.0:8000
+site_name: Bampe Weights - Predicting AI Weights
+site_url: https://bampe-weights.readthedocs.io/en/latest/
+repo_url: https://github.com/matlok-ai/bampe-weights
+edit_uri: https://github.com/matlok-ai/bampe-weights/blob/main/docs/
+site_description: An alternative approach to building Generative AI Models
+site_author: matlok
+
+# https://www.mkdocs.org/user-guide/configuration/#documentation-layout
+theme:
+  name: readthedocs
+  # name: mkdocs
+  # locale: en
+  # https://www.mkdocs.org/user-guide/choosing-your-theme/
+  analytics:
+    gtag: G-5WXGL4TV74
+  highlightjs: true
+  features:
+  - navigation.expand
+  - navigation.path
+  - toc.integrate
+
+# submodules:
+#  include: all
+#  recursive: true
+
+nav:
+- Building a new type of Generative AI Model with Traditional AI Training:
+  - index.md
+- Extracting Tensor Weights using safetensors and mmap:
+  - docs/sdk/extract-tensor-weights-as-a-numpy-file-from-a-generative-ai-model.safetensors-file.md
+- Converting Tensor Weights: 
+  - docs/sdk/convert-tensor-weights-to-tiff-file.md
+- Predicting new Tensor Weights for assembling a new type of Generative AI Model without Traditional AI Training:
+  - docs/sdk/use-stable-diffusion-to-predict-new-tensor-weights-for-a-new-generative-ai-model-tensor-weight-as-a-5-to-12-mb-tiff-file-chunk.md
+extra:
+  version: "1.0.0"
+plugins:
+- search
+# https://mkdocstrings.github.io/usage/#finding-out-the-anchor
+- autorefs
+- mkdocstrings:
+    handlers:
+      # See: https://mkdocstrings.github.io/python/usage/
+      python:
+        options:
+          docstring_style: sphinx
+          # https://mkdocstrings.github.io/python/usage/configuration/headings/
+          # show_root_toc_entry: true
+          # heading_level: 6
+        paths:
+        - bw
+        - bw.converter
+        - bw.diff
+        - bw.st
+        - examples
+markdown_extensions:
+- markdown_include.include:
+    base_path: .
+- admonition
+# - toc:
+#    toc_depth: 6
