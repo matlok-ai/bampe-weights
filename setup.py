@@ -15,7 +15,7 @@ setup(
         "bw.st",
     ],
     scripts=[],
-    version="0.0.1",
+    version="0.0.2",
     license="Apache 2.0",
     description=(
         "An alternative approach to "

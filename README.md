@@ -142,7 +142,7 @@ time ./examples/step-2-convert-npy-to-tiff.py
 
 By default this will store the new LLM weight chunk bufffer Tiff file in the ``./chunks`` directory. If you have not run this before, the command will download the [~8GB Salesforce BLIP-2 generative ai image model (image2image)](https://huggingface.co/docs/transformers/main/en/model_doc/blip-2) from HuggingFace.
 
-Note: I included more detailed benchmarks in the [./examples/step-3-generate-model-weight-chunk-as-tiff.py]() script. Hopefully other hardware has consistent performance with this gaming machine running wsl2 Ubuntu 22.04 with python 3.11.
+Note: I included more detailed benchmarks in the [./examples/step-3-generate-model-weight-chunk-as-tiff.py](https://github.com/matlok-ai/bampe-weights/blob/main/examples/step-3-generate-model-weight-chunk-as-tiff.py) script. Hopefully other hardware has consistent performance with this gaming machine running wsl2 Ubuntu 22.04 with python 3.11.
 
 #### Predicting ~780 KB of new Generative AI model tensor weights using Stable Diffusion on CPU
 
