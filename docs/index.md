@@ -116,8 +116,6 @@ large | ~5-12 mb | 30s | gpu-only on SAS hdd |
 - Testing shows you can generate a 5-12 MB chunk of predicted weights in ~30s on an Nvidia 4070 ti.
 - By default the included examples run on cpu, but if you have a gpu the examples will run faster by setting this environment variable before starting:
 
-By default, the included examples run on cpu, but if you have a gpu the examples will run faster by setting this environment variable before starting:
-
 ```bash
 export DEVICE=cuda
 ```
