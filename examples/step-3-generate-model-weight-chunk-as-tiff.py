@@ -101,15 +101,18 @@ def generate_model_weight_chunk_as_tiff():
         guidance_scale=guidance_scale,
         num_inference_steps=num_inference_steps,
     )
-    log.info(
-        "done predicting new llm weights - \n"
-        "please compare source tensor weight "
-        "image file:\n"
-        f"{tiff_input_file}\n"
-        "to the predicted weights file by "
-        "the generative image ai model:\n"
-        f"{output_file}\n"
-    )
+    if os.path.exists(output_file):
+        log.info(
+            "done predicting new llm weights - \n"
+            "please compare source tensor weight "
+            "image file:\n"
+            f"{tiff_input_file}\n"
+            "to the predicted weights file by "
+            "the generative image ai model:\n"
+            f"{output_file}\n"
+        )
+    else:
+        log.error("did not generate predicted weights")
 
 
 if __name__ == "__main__":

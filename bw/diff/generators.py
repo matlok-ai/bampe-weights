@@ -65,10 +65,7 @@ def run_stable_diffusion_to_generate_model_weight_layer_as_image(
         disk with default True
     """
     if not os.path.exists(input_file):
-        log.error(
-            "please set a valid tiff path to "
-            "a file that is not readable: {tiff_input_file}"
-        )
+        log.error(f"unable to find input_file={input_file}")
         return None
     log.info(
         f"loading {model_name} gen ai "
