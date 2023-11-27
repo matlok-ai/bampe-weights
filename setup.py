@@ -15,11 +15,12 @@ setup(
         "bw.st",
     ],
     scripts=[],
-    version="0.0.4",
-    license="Apache 2.0",
+    version="0.0.5",
+    license="MIT",
     description=(
         "An alternative approach to "
-        "building Generative AI models"
+        "building foundational generative "
+        "AI models"
     ),
     author="matlok-ops",
     author_email="hello@matlok.ai",

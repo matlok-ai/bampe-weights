@@ -16,13 +16,17 @@ Here's the PoC results and dataset so you can download and view with any tool th
 
 ### Review the AI's predicted weights on GitHub:
 
-#### CPU-Generated Weights
+#### CPU-Generated Predicted Weights
+
+This screenshot is an example of "trained weights" for a new type of foundational generative AI model (called a weight-derived model):
 
 ![Screenshot of CPU-Generated tensor weights for the GPT2 layer key - h.0.attn.c_attn.weight](https://raw.githubusercontent.com/matlok-ai/gen-ai-datasets-for-bampe-weights/main/docs/images/safetensors/gpt2/out/cpu-generated_predicted-model-weights__layer__h.0.attn.c_attn.weight__chunk__0.png)
 
 - Source: [CPU-generated Tiff](https://github.com/matlok-ai/gen-ai-datasets-for-bampe-weights/blob/main/safetensors/gpt2/out/cpu-generated_predicted-model-weights__layer__h.0.attn.c_attn.weight__chunk__0.tiff)
 
-#### GPU-Generated WeightPredicteds
+#### GPU-Generated Predicted Weights
+
+This screenshot is an example of "trained weights" for a new type of foundational generative AI model (called a weight-derived model):
 
 ![Screenshot of GPU-Generated tensor weights for the GPT2 layer key - h.0.attn.c_attn.weight](https://raw.githubusercontent.com/matlok-ai/gen-ai-datasets-for-bampe-weights/main/docs/images/safetensors/gpt2/out/gpu-generated_predicted-model-weights__layer__h.0.attn.c_attn.weight__chunk__0.png)
 
