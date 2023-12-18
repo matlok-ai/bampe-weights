@@ -28,7 +28,7 @@ theme:
 
 nav:
 - Visualizing AI:
-  - bampe-vision.md
+  - index.md
 - Automated Exports:
   - automation/export-guide.md
 - Getting Started:
@@ -70,5 +70,5 @@ markdown_extensions:
 - markdown_include.include:
     base_path: .
 - admonition
-# - toc:
-#    toc_depth: 6
+- toc:
+    toc_depth: 6
