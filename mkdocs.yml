@@ -1,7 +1,7 @@
 # pip install --upgrade mkdocs mkdocstrings-python markdown-include
 # mkdocs serve -a 0.0.0.0:8000
 # dev_addr: 0.0.0.0:8000
-site_name: Bampe Weights - Predicting AI Weights
+site_name: Bampe Weights - Visualizing and Predicting AI Weights
 site_url: https://bampe-weights.readthedocs.io/en/latest/
 repo_url: https://github.com/matlok-ai/bampe-weights
 edit_uri: https://github.com/matlok-ai/bampe-weights/blob/main/docs/
@@ -27,13 +27,23 @@ theme:
 #  recursive: true
 
 nav:
-- Building a new type of Generative AI Model with Traditional AI Training:
-  - index.md
-- Extracting Tensor Weights using safetensors and mmap:
+- Visualizing AI:
+  - bampe-vision.md
+- Automated Exports:
+  - automation/export-guide.md
+- Getting Started:
+  - sdk/setting-up-a-development-environment.md
+  - sdk/blender/blender-install-notes.md
+- SDK and APIs:
+  - sdk/blender/blender-api-overview.md
+  - sdk/numpy/numpy-api-overview.md
+- Profiling 3D Data:
+  - shapes/mc/using-marching-cubes-to-profile-3d-data-to-find-3d-shapes.md
+- Extracting Tensor Weights:
   - sdk/extract-tensor-weights-as-a-numpy-file-from-a-generative-ai-model.safetensors-file.md
 - Converting Tensor Weights: 
   - sdk/convert-tensor-weights-to-tiff-file.md
-- Predicting new Tensor Weights for assembling a new type of Generative AI Model without Traditional AI Training:
+- Predicting new AI Weight:
   - sdk/use-stable-diffusion-to-predict-new-tensor-weights-for-a-new-generative-ai-model-tensor-weight-as-a-5-to-12-mb-tiff-file-chunk.md
 extra:
   version: "1.0.0"

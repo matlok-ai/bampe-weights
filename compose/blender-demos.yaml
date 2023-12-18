@@ -1,0 +1,17 @@
+services:
+  blender:
+    image: docker.io/matlokai/blender-ai-demos:latest
+    container_name: blender
+    security_opt:
+    - seccomp:unconfined #optional
+    environment:
+    - PUID=1000
+    - PGID=1000
+    - TZ=Etc/UTC
+    - SUBFOLDER=/ #optional
+    volumes:
+    - ../blender:/config/bampe
+    network_mode: host
+    ports:
+    - 3000:3000
+    - 3001:3001
