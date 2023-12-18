@@ -32,3 +32,11 @@ var/
 *.npy
 *.swo
 *.swp
+*.npz
+*.parquet
+*.pq
+*.vtk
+*.tmp
+*.gif
+*.stl
+*.glb

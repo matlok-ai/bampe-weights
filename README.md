@@ -1,245 +1,228 @@
-## An Alternative Approach to Building Generative AI Models?
+## Can an AI visualizer help us build and audit AI models?
 
-This project is an approach for building generative models by extracting model weights then using those weights with another generative AI model to predict new weights for reuse in one or many new generative ai model(s). If proven, this approach would hopefully reduce the traditional expensive training costs and enable faster model vetting with a flexible, stream-lined process.
+Building large AI models has a learning curve, and is both time and resource intensive. Until recently, we thought of a pre-trained AI’s model weights as ambiguous 2d arrays of decimal numbers, but what if there was something more.
 
-The [bampe-weights](https://github.com/matlok-ai/bampe-weights) repo includes an initial proof of concept for building small, modular weights from a few generative ai model.safetensors files with included benchmarks. In its current state, this PoC is capable of predicting a customizable chunk of predicted weights that you can view to verify whether this idea is feasible or not.
+![Using Blender and Marching Cubes to Extract and View Shapes in Model Weights](https://raw.githubusercontent.com/matlok-ai/gen-ai-datasets-for-bampe-weights/main/docs/images/blender/viewing-gpt2-tensor-weights-as-shapes-using-marching-cubes.png)
 
-We believe we have found a design pattern for assembling generative ai models faster because our predicted 2d image is visually-similar "enough" to the original multi-dimensional, embedded space tensor image that includes most of the "intelligence" and learning.
+Today we want to share how we are exploring AI model weights, but first let’s see how we got here.
 
-Here's the PoC results and dataset so you can download and view with any tool that can view TIFF image files:
+![Extract and View Configurable Model Layer Weights using Blender](https://raw.githubusercontent.com/matlok-ai/gen-ai-datasets-for-bampe-weights/main/docs/images/blender/gpt2-tensor-weights-in-blender-legend.png)
 
-### Review the input model's sample weights on GitHub
+### Background
 
-![Screenshot of tensor weights for GPT2 layer key - h.0.attn.c_attn.weight](https://raw.githubusercontent.com/matlok-ai/gen-ai-datasets-for-bampe-weights/main/docs/images/safetensors/gpt2/in/idata__h.0.attn.c_attn.weight.png)
+1.  We read these key papers
 
-- Source: [Tensor Weight as a Tiff file](https://github.com/matlok-ai/gen-ai-datasets-for-bampe-weights/blob/main/safetensors/gpt2/in/idata__h.0.attn.c_attn.weight.tiff)
+    - [ImageNet classification with deep convolutional neural networks](https://dl.acm.org/doi/10.1145/3065386)
 
-### Review the AI's predicted weights on GitHub:
+    - [Attention Is All You Need](https://arxiv.org/abs/1706.03762)
 
-#### CPU-Generated Predicted Weights
+1.  Takeaways / Highlights
 
-This screenshot is an example of "trained weights" for a new type of foundational generative AI model (called a weight-derived model):
+    - Transformers and attention are used for encoding and decoding training data
+    - Architecture enables making predictions using math and matrices by hosting the weights in memory
+    - Everything needed to reproduce Transformer behaviors are stored and shared as weights in model files
+    - Weights are saved as numerical data in a model file (usually 2d float 32 arrays)
 
-![Screenshot of CPU-Generated tensor weights for the GPT2 layer key - h.0.attn.c_attn.weight](https://raw.githubusercontent.com/matlok-ai/gen-ai-datasets-for-bampe-weights/main/docs/images/safetensors/gpt2/out/cpu-generated_predicted-model-weights__layer__h.0.attn.c_attn.weight__chunk__0.png)
+1.  Key Questions
 
-- Source: [CPU-generated Tiff](https://github.com/matlok-ai/gen-ai-datasets-for-bampe-weights/blob/main/safetensors/gpt2/out/cpu-generated_predicted-model-weights__layer__h.0.attn.c_attn.weight__chunk__0.tiff)
+    -   What else works with matrices and high resolution float 32 data? (TIFF images)?
 
-#### GPU-Generated Predicted Weights
+        -   Graphics / gaming engines / ffmpeg
+        -   [Brain image scanning with FMRI / CAT / MEG](https://www.ncbi.nlm.nih.gov/books/NBK2602/)
+        -   [Nasa Earthdata GeoTiff](https://www.earthdata.nasa.gov/esdis/esco/standards-and-practices/geotiff)
 
-This screenshot is an example of "trained weights" for a new type of foundational generative AI model (called a weight-derived model):
+    -   Why can’t we reuse similar techniques from these systems that have large, high resolution datasets to navigate “the weights” with a different type of iterator? With the current rust and mmap performance loading a 100 GB file on disk, who knows maybe this approach could work without a GPU for smaller models constrained to CPU-only.
+    -   What technical pieces are missing/required to get started?
+        -   What do the weights look like?
+        -   How can we teach AI to learn what weights mean?
+        -   What can we do with time series training data based on how an AI model’s weights changed over time?
 
-![Screenshot of GPU-Generated tensor weights for the GPT2 layer key - h.0.attn.c_attn.weight](https://raw.githubusercontent.com/matlok-ai/gen-ai-datasets-for-bampe-weights/main/docs/images/safetensors/gpt2/out/gpu-generated_predicted-model-weights__layer__h.0.attn.c_attn.weight__chunk__0.png)
+### Conclusion
 
-- Source: [GPU-generated Tiff](https://github.com/matlok-ai/gen-ai-datasets-for-bampe-weights/blob/main/safetensors/gpt2/out/gpu-generated_predicted-model-weights__layer__h.0.attn.c_attn.weight__chunk__0.tiff)
+-   What
 
-### Sample Weights for the PoC
+    - We have built a prototype for extracting and hopefully identifying how weights:
 
-The PoC input sample weights were extracted from the HuggingFace **model.safetensors** file:
+        - relate back to the original source training data
 
-[https://huggingface.co/gpt2/tree/main](https://huggingface.co/gpt2/tree/main)
+        - change over many training generations
 
-The results below are available for anyone and let us know if you have any issues trying out the PoC!
+        - appear to represent a dense 3d field of training knowledge saved as embedded “weights” (unproven but this is our hypothesis based on the techniques that appear to be working)
 
-### Sources for Inspiration and Help Pushing the Community Forward!
+-   Why
 
-- Tom Jobbins
-- Georgi Gerganov
-- HuggingFace
-- LAVIS
-- Stable Diffusion
-- LocalLLaMAs
-- LLama.cpp
-- Weights and Biases
+    -   We wanted to understand why LLMs are special and how the weights fit into this innovative technology.
 
-### Getting Started
+    -   By choosing to spend our time trying to view what LLM weights are, we believe we can apply well-known visualization techniques for analyzing human brain scans to extract, identify, reuse and audit what the weights are.
 
-Extract, Generate, Reuse and Predict new Generative AI Model Weights for LLMs or Text-to-Image or Image-to-Image or Text-to-Audio or Audio-to-Audio Models
+    -   Before large generative AI Transformer weights were widely available, these types of dense, high resolution training datasets were very expensive and not frequently shared
 
-#### Download a model.safetensors file
+-   How
 
-This version only supports model.safetensors files downloaded from [GPTQ models on the HuggingFace leaderboard](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard).
+    -   We built this prototype using digital signal processing algorithms (DSP) for volumetric analysis of high resolution data and combined the analysis engine with Blender (an open source visualization tool).
 
-As of 2023-11-17 here are some of the current GPTQ model leaders and most-downloads that include a huge file with the pre-trained weights (download the model.safetensors file).
+    -   We will open source and track how an AI learns from the ground up and use Blender to export and share what the weights look like as we go.
 
-The below model is good for a lightweight PoC (weight is ~6.8 MB):
+    -   By choosing to use Blender to analyze model weights in a 3d volume, we built in animation capabilities that let us design our initial v1 API for capturing a time series training dataset. This training dataset is focused on capturing how an AI foundational model learns through each training phase using high performance weight analysis on volumetric data.
 
-- [Review the 523 MB GPT2 model.safetensors file on HuggingFace](https://huggingface.co/gpt2/tree/main)
+    -   We believe we need to share how these models look so we can understand them and train AI’s to build and audit themselves.
 
-Larger examples we are already using:
+    -   We want to see what mixtures of experts looks like too (download the newest Dolphin 2.5 Mixtral 8x7B STL/glTF mesh versions below).
 
-- [Llama-2-7B-Chat-GPTQ](https://huggingface.co/TheBloke/Llama-2-7B-Chat-GPTQ/tree/main)
-- [Llama-2-70B-Chat-GPTQ](https://huggingface.co/TheBloke/Llama-2-70B-Chat-GPTQ/tree/main)
-- [CodeLlama-34B-Instruct-GPTQ](https://huggingface.co/TheBloke/CodeLlama-34B-Instruct-GPTQ/tree/main)
-- [Airoboros-L2-70B-2.1-GPTQ](https://huggingface.co/TheBloke/Airoboros-L2-70B-2.1-GPTQ/tree/main)
+### Overview
 
-```bash
-# wget https://huggingface.co/TheBloke/Llama-2-7B-Chat-GPTQ/resolve/main/model.safetensors
-# wget https://huggingface.co/TheBloke/Llama-2-70B-Chat-GPTQ/resolve/main/model.safetensors
-wget https://huggingface.co/gpt2/resolve/main/model.safetensors
-```
+This repository is for profiling, extracting, visualizing and reusing generative AI weights to hopefully build more accurate AI models and audit/scan weights at rest to identify knowledge domains for risk(s).
 
-#### Install
+![Viewing an Extracted Marching Cubes 3D Mesh from a Large Generative AI Model's Weights using Blender](https://raw.githubusercontent.com/matlok-ai/gen-ai-datasets-for-bampe-weights/main/docs/images/blender/gpt2-tensor-weights-in-blender.png)
 
-##### Clone
+Note: today's version only includes how to profile, extract and visualize existing model weights. Now that we can visualize how AI models learn, foundational model training is next. The training visualization will start by teaching a new AI model about "how the [bampe-weights repository](https://github.com/matlok-ai/bampe-weights/) integrated numpy, pandas and Blender". We have ~190 python/(task,prompt,answer) files to organize before sharing.
 
-```bash
-git clone https://github.com/matlok-ai/bampe-weights
-cd bampe-weights
-```
+### What do extracted weights look like?
 
-##### Install
+This repository is exploring visualizations of model's learning over time and building training datasets from extracted "weight shapes" to build and predict new AI model weights (hopefully faster than traditional training methods too).
 
-Install the latest pip:
+Here's what Llama 2 7B Chat GPTQ looks like inside Blender and exported as a gif using this repository:
 
-```bash
-pip install bampe-weights
-```
+- [View extracted shapes from Llama 2 7B Chat GPTQ in a 75 MB gif - https://i.imgur.com/9vdATAt.mp4](https://i.imgur.com/9vdATAt.mp4)
 
-Or install the development build:
+#### Catalog of Available Generative AI Blender 3D Visualizations in glTF and STL files hosted on Google Drive
 
-```bash
-pip install -e .
-```
+The following google drive folders contain the emerging index of large language model glTF and STL visualizations. The files range from ~1 MB to +2 GB.
 
-### Supports GPU or CPU
+Reach out if you want to see a new model/density!
 
-#### Current Performance Benchmarks
+- [Dolphin 2.5 Mixtral 8x7B GPTQ](https://drive.google.com/drive/folders/1xAO8vAi6NPVql8eye5RqsPntWO9xXDYV?usp=sharing)
+- [Phind CodeLlama 34B v2 GPTQ](https://drive.google.com/drive/folders/1FhcG3fQzFJ_F36jZ3RiQccZTkhpHtNFx?usp=sharing)
+- [DeepSeek Coder 34B GPTQ](https://drive.google.com/drive/folders/1uM498ZEUWj5s-89opmYJI7gnws3I1hc3?usp=sharing)
+- [Mistral 7B OpenOrca GPTQ](https://drive.google.com/drive/folders/1Snnh8QO3X2VmwdTLHxij4higW90g17u2?usp=sharing)
+- [Llama 2 7B Chat GPTQ](https://drive.google.com/drive/folders/1ZL85E_otE-X8ypb9znaVBhfmWq8chadR?usp=drive_link)
+- [GPT 2](https://drive.google.com/drive/folders/1TlI14Ha5voglO4w__4CPVhNwmgk8rNj6?usp=drive_link)
 
-Customizable weight prediction sizes based off resource constraints (IoT, embedded devices will have different profiles)
+#### Datasets on GitHub
 
-Use Case | Size | Time | Hardware |
---- | --- | --- | --- |
-small | ~780 KB | 13s | cpu-only on m2 SSD m2 |
-small | ~780 KB | 40s | cpu-only on SAS hdd |
-medium | ~3 mb | 120s | cpu-only on m2 SSD |
-large | ~5-12 mb | >3m | cpu-only on SAS hdd |
-large | ~5-12 mb | 30s | gpu-only on SAS hdd |
+##### Viewing STL Files on GitHub
 
-**Notes:**
+If an STL file is small enough, then GitHub can automatically render the 3d meshes. Note: viewing GitHub STL on mobile is not ideal at the moment, but on a desktop you can zoom into the layers using a mouse wheel in reverse and rotate with the left/right mouse buttons:
 
-- Testing shows you can generate a 5-12 MB chunk of predicted weights in ~30s on an Nvidia 4070 ti.
-- By default the included examples run on cpu, but if you have a gpu the examples will run faster by setting this environment variable before starting:
+- [Dolphin 2.5 Mixtral 8x7b](https://github.com/matlok-ai/gen-ai-datasets-for-bampe-weights/blob/main/docs/images/blender/dolphin-2.5-mixtral-8x7b/demo-dolphin-2.5-mixtral-8x7b-dim_512_shapes_500000_layers_2.stl)
+- [Phind Code Llama 2 34B v2](https://github.com/matlok-ai/gen-ai-datasets-for-bampe-weights/blob/main/docs/images/blender/phind-34b-v2/demo-phind-34b-v2-dim_512_shapes_500000_layers_2.stl)
+- [Mistral 7B OpenOrca](https://github.com/matlok-ai/gen-ai-datasets-for-bampe-weights/blob/main/docs/images/blender/mistral-7b-openorca/demo-mistral-7b-openorca-dim_512_shapes_500000_layers_2.stl)
 
-```bash
-export DEVICE=cuda
-```
+##### GitHub Dataset Repository
 
-### Extract Weights
+We try to stay under the 50 MB limit and store assets on our [repo on GitHub - https://github.com/matlok-ai/gen-ai-datasets-for-bampe-weights/docs/images/blender](https://github.com/matlok-ai/gen-ai-datasets-for-bampe-weights/tree/main/docs/images/blender)
 
-By default this will extract to the ``./npy/weights`` directory.
+### Using Blender to Visualize Generative AI Models the AI Training Process
 
-```bash
-time ./examples/step-1-extract-tensors.py
-```
+#### Viewing Extracted Shapes from AI Model Weights Using a Blender Container Image
 
-### Convert Weights to Tiff Format
+Self-host Blender in a container to help see what generative AI weights look like locally:
 
-By default this will store the new Tiff file in the ``./tiff`` directory.
+1.  Blender Demo Container Image with exported STL/GLB files already included
 
-```bash
-time ./examples/step-2-convert-npy-to-tiff.py
-```
+    The [matlok/blender-ai-demos](https://hub.docker.com/repository/docker/matlokai/blender-ai-demos/general) image was created from the [LinuxServer Blender image](https://github.com/linuxserver/docker-blender) and includes 3D STL and GLB files that you can view in a browser. The blender-ai-demos extracted container image is >4.0 GB on disk and uses about 3 GB ram to process STL or glTF files >40 MB:
 
-### Predict LLM Weights using Stable Diffusion
+    The demo visualizations are found in this directory inside the container:
 
-By default this will store the new LLM weight chunk bufffer Tiff file in the ``./chunks`` directory. If you have not run this before, the command will download the [~8GB Salesforce BLIP-2 generative ai image model (image2image)](https://huggingface.co/docs/transformers/main/en/model_doc/blip-2) from HuggingFace.
+    **/config/bampe-visualizations**
 
-Note: I included more detailed benchmarks in the [./examples/step-3-generate-model-weight-chunk-as-tiff.py](https://github.com/matlok-ai/bampe-weights/blob/main/examples/step-3-generate-model-weight-chunk-as-tiff.py) script. Hopefully other hardware has consistent performance with this gaming machine running wsl2 Ubuntu 22.04 with python 3.11.
+    **Docker**
 
-#### Predicting ~780 KB of new Generative AI model tensor weights using Stable Diffusion on CPU
+    ```
+    docker rm blender; docker-compose -f compose/blender-demos.yaml up -d
+    ```
 
-##### Predictions on SSD takes 13 seconds
+    **Podman**
 
-```bash
-time ./examples/step-3-generate-model-weight-chunk-as-tiff.py
-2023-11-17 12:00:47.212 INFO generators - run_stable_diffusion_to_generate_model_weight_layer_as_image - loading Salesforce/blipdiffusion gen ai pipeline on device=cpu prediction with num_inf=3 buffer size width=512 height=512
-vision_encoder/model.safetensors not found
-Loading pipeline components...: 100%|█████████████████████████████████████████████████████████████████████████| 7/7 [00:02<00:00,  2.56it/s]2023-11-17 12:00:50.502 INFO generators - run_stable_diffusion_to_generate_model_weight_layer_as_image - loading image=./tiff/idata__h.0.attn.c_attn.weight.tiff gen 512x512 prompt=
-100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:05<00:00,  1.43s/it]2023-11-17 12:00:59.750 INFO generators - run_stable_diffusion_to_generate_model_weight_layer_as_image - saving chunk to: ./chunks/predicted-model-weights__layer__h.0.attn.c_attn.weight__chunk__0.tiff
-2023-11-17 12:00:59.750 INFO generators - run_stable_diffusion_to_generate_model_weight_layer_as_image - output[0]=<PIL.Image.Image image mode=RGB size=512x512 at 0x7F97912B7D90>
-2023-11-17 12:00:59.764 INFO step-3-generate-model-weight-chunk-as-tiff - <module> - done predicting new llm weights - please compare
-source tensor weight image file:
-./tiff/idata__h.0.attn.c_attn.weight.tiff
-to the predicted weights file by the generative image ai model:
-./chunks/predicted-model-weights__layer__h.0.attn.c_attn.weight__chunk__0.tiff
+    ```
+    podman rm -t 0 -f blender; podman-compose -f compose/blender-demos.yaml up -d
+    ```
 
+1.  Base LinuxServer image
 
-real    0m13.522s
-user    1m43.081s
-sys     0m9.837s
-```
+    Run the [LinuxServer/docker-blender image (lscr.io/linuxserver/blender:latest)](https://github.com/linuxserver/docker-blender/) and generate new STL/GLB files that are ready to view using an already-mounted volume between the host and the Blender container (**.blender** directory). The docker-blender extracted container image is ~3 GB on disk.
 
-##### Predictions on SAS hard drive takes ~40 seconds
+    **Docker**
 
-```bash
-2023-11-17 17:16:52.699 INFO generators - run_stable_diffusion_to_generate_model_weight_layer_as_image - loading Salesforce/blipdiffusion gen ai pipeline on device=cpu prediction with num_inf=3 buffer size width=512 height=512
-vae/diffusion_pytorch_model.safetensors not found
-Loading pipeline components...: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 7/7 [00:09<00:00,  1.33s/it]2023-11-17 17:17:03.005 INFO generators - run_stable_diffusion_to_generate_model_weight_layer_as_image - loading image=./tiff/idata__h.0.attn.c_attn.weight.tiff gen 512x512 prompt=
-  0%|                                                                                                                                                                                        | 0/4 [00:00<?, ?it/s][W NNPACK.cpp:64] Could not initialize NNPACK! Reason: Unsupported hardware.
-100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:14<00:00,  3.66s/it]2023-11-17 17:17:28.070 INFO generators - run_stable_diffusion_to_generate_model_weight_layer_as_image - saving chunk to: ./chunks/predicted-model-weights__layer__h.0.attn.c_attn.weight__chunk__0.tiff
-2023-11-17 17:17:28.070 INFO generators - run_stable_diffusion_to_generate_model_weight_layer_as_image - output[0]=<PIL.Image.Image image mode=RGB size=512x512 at 0x7F634949B7D0>
-2023-11-17 17:17:28.377 INFO step-3-generate-model-weight-chunk-as-tiff - <module> - done predicting new llm weights - please compare
-source tensor weight image file:
-./tiff/idata__h.0.attn.c_attn.weight.tiff
-to the predicted weights file by the generative image ai model:
-./chunks/predicted-model-weights__layer__h.0.attn.c_attn.weight__chunk__0.tiff
+    ```
+    docker rm blender; docker-compose -f compose/blender-demos.yaml up -d
+    ```
 
+    **Podman**
 
-real    0m39.590s
-user    7m20.328s
-sys     2m18.198s
-```
+    ```
+    podman rm -t 0 -f blender; podman-compose -f compose/base.yaml up -d
+    ```
 
-#### Predicting 12 MB of new Generative AI model tensor weights using Stable Diffusion on GPU in 33 seconds
+    Note: newly-created visual artifacts (STL and glTF glb files) only show up once the container is restarted in this directory inside the Blender container:
 
-For the demo GPT 2 model, this usually is more LLM tensor weights than the original seed tensor weight data (6.8 mb was used to predict ~11.8mb)
+    **/config/bampe**
 
-```bash
-export DEVICE=cuda; time  ./examples/step-3-generate-model-weight-chunk-as-tiff.py
-2023-11-17 12:04:20.558 INFO generators - run_stable_diffusion_to_generate_model_weight_layer_as_image - loading Salesforce/blipdiffusion gen ai pipeline on device=cuda prediction with num_inf=3 buffer size width=2000 height=2000
-vision_encoder/model.safetensors not found
-Loading pipeline components...: 100%|█████████████████████████████████████████████████████████████████████████| 7/7 [00:02<00:00,  3.20it/s]2023-11-17 12:04:23.932 INFO generators - run_stable_diffusion_to_generate_model_weight_layer_as_image - loading image=./tiff/idata__h.0.attn.c_attn.weight.tiff gen 2000x2000 prompt=
-100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:03<00:00,  1.23it/s]2023-11-17 12:04:52.293 INFO generators - run_stable_diffusion_to_generate_model_weight_layer_as_image - saving chunk to: ./chunks/predicted-model-weights__layer__h.0.attn.c_attn.weight__chunk__0.tiff
-2023-11-17 12:04:52.293 INFO generators - run_stable_diffusion_to_generate_model_weight_layer_as_image - output[0]=<PIL.Image.Image image mode=RGB size=2000x2000 at 0x7FD65B68BED0>
-2023-11-17 12:04:52.304 INFO step-3-generate-model-weight-chunk-as-tiff - <module> - done predicting new llm weights - please compare
-source tensor weight image file:
-./tiff/idata__h.0.attn.c_attn.weight.tiff
-to the predicted weights file by the generative image ai model:
-./chunks/predicted-model-weights__layer__h.0.attn.c_attn.weight__chunk__0.tiff
+1.  Open up Blender in a browser
 
+    Blender is listening at this url:
 
-real    0m33.368s
-user    0m32.405s
-sys     0m5.949s
-```
+    [http://localhost:3000](http://localhost:3000)
 
-## Linting
+1.  Load a 3D Blender AI Visualization Manually
 
-```bash
-black --line-length 60 *.py bw/*/*.py examples/*.py
-```
+    Once Blender is running in the browser, you can import STL or glTF files by clicking these menus:
 
-#### Coming Soon
+    1.  **File**
 
-- Build a foundational model with a File transformer that can predict any type of file contents (llm tensor weights are just the first use case - json/tcp/protocols should work too)
-- Use the file transformer to build new model weights for model weight reassembly and testing
-- Support for GGUF/bin and other model file formats. I have a poc using llama.cpp GGUF, but it is not ready for release due to how the quantization process works. It made me worried that additional byte-level compression would invalidate this early approach.
+    2.  **Import**
 
-#### Learn More
+    3.  **STL** or **glTF**
 
-- [Homepage - https://matlok.ai](https://matlok.ai)
-- [ReadTheDocs - bampe-weights](https://bampe-weights.readthedocs.io/en/latest/)
-- [PyPi - bampe-weights](https://pypi.org/project/bampe-weights/)
+    4.  Files are either in the **/config/bampe** or **/config/bampe-visualizations** depending on the running container version
 
-##### Who made this?
+### Blender Navigation Mode Tips
 
-Made with <3 by smooth-brained ai models,
+#### Navigation Mode - Walk
 
-Hakinge and Bampe
+- Use **Shift + `** to enable navigation mode with the mouse and W, A, S, D for first person movement.
 
-![Made by the AI-generated matlok avatars Hakinge and Bampe](https://raw.githubusercontent.com/matlok-ai/gen-ai-datasets-for-bampe-weights/main/docs/users/hakinge-jonter-and-bampe-hic-small.jpg)
+- Holding the **Shift** button will move with turbo speed too.
 
-Reach out if you want to catch up and thanks for reading,
+#### Adjust Navigation Mouse Sensitivity and Walk Speed
 
-hello@matlok.ai
+1.  Open **Edit** -> **Preferences** -> **Navigation** -> **Fly & Walk** -> **Walk Toggle Arrow**
 
+1.  Adjust **Mouse Sensitivity** -> **0.1**
+
+1.  Adjust **Walk Speed** -> **20 m/s**
+
+#### Viewing AI Models like a Video Game with Blender on the Command Line
+
+##### Setting up a Development Environment
+
+This repository is for researching alternative approaches to building AI using pretrained AI weights. It is a work in progress so please refer to the [Setting up a Development Environment](https://bampe-weights.readthedocs.io/en/latest/sdk/setting-up-a-development-environment/) for more details on running this from the command line.
+
+### Where else can I view exported glTF and STL files?
+
+We can share and view these shapes using online tools.
+
+##### Online glTF viewers
+
+- [https://gltf-viewer.donmccurdy.com/](https://gltf-viewer.donmccurdy.com/)
+
+##### Online STL viewers
+
+- [https://stlviewer.kwebpia.net](https://stlviewer.kwebpia.net)
+
+### Supported Platforms
+
+This repository was tested on the following platforms:
+
+#### Windows WSL
+
+- Blender 3 on Ubuntu 22.04 (apt package) - wsl2 Windows 11 gpu
+
+#### Linux Ubuntu 22.04 Bare Metal
+
+- Blender 4 on Ubuntu 22.04 (snap package) - hypervisor no gpu
+
+#### Blender Container Image Sources
+
+- [Demos - matlokai/blender-ai-demos](https://hub.docker.com/repository/docker/matlokai/blender-ai-demos/general)
+- [Base - LinuxServer/docker-blender](https://github.com/linuxserver/docker-blender)
